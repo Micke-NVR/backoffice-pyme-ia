@@ -1,13 +1,31 @@
-Facturas - Sirve para visualizar los datos de las facturas.
-id entero guarda el id X CLAVE PRIMARIA
-proveedor_id entero guarda el id de la tabla proveedor X CLAVE FORANEA
-numero texto guarda el nombre de la factura F001-A o algo así
-fecha tiempo guarda la fecha de la factura
-subtotal decimales guarda monto antes de impuestos
-igv decimales guarda el impuesto
-total decimales guarda el total despues de calcular
+# Modelo de datos (borrador inicial)
 
-Proveedores - Sirve para identificar a un proveedor.
-id entero guarda el id X CLAVE PRIMARIA  
-ruc numero de 11 caracteres guarda el numero de ruc
-razon_social texto guarda el nombre de el proveedor
+## Relación entre las tablas
+Un proveedor tiene muchas facturas. Cada factura pertenece a un solo proveedor.
+`proveedores.id` ← `facturas.proveedor_id`
+
+---
+
+## Tabla `proveedores`
+Guarda los datos de cada proveedor que emite facturas.
+
+| Columna | Tipo de dato | Qué guarda | Clave |
+|---|---|---|---|
+| `id` | entero (`INTEGER`) | Identificador único del proveedor | Primaria |
+| `ruc` | texto de 11 caracteres (`CHAR(11)`) | Número de RUC | |
+| `razon_social` | texto (`VARCHAR`) | Nombre del proveedor | |
+
+---
+
+## Tabla `facturas`
+Guarda los datos de cada factura recibida.
+
+| Columna | Tipo de dato | Qué guarda | Clave |
+|---|---|---|---|
+| `id` | entero (`INTEGER`) | Identificador único de la factura | Primaria |
+| `proveedor_id` | entero (`INTEGER`) | `id` del proveedor que emitió la factura | Foránea → `proveedores.id` |
+| `numero` | texto (`VARCHAR`) | Serie y correlativo, por ejemplo F001-123 | |
+| `fecha` | fecha (`DATE`) | Fecha de emisión de la factura | |
+| `subtotal` | decimal (`NUMERIC(12,2)`) | Monto antes de impuestos | |
+| `igv` | decimal (`NUMERIC(12,2)`) | Impuesto (18% del subtotal) | |
+| `total` | decimal (`NUMERIC(12,2)`) | Subtotal + IGV | |
